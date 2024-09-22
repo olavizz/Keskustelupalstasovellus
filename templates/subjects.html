@@ -1,0 +1,14 @@
+Tästä voit valita keskusteluaiheen
+
+<hr>
+{% for topic in topics %}
+<a href="/subjects/{{ topic[0] }}">{{ topic[1] }} </a>
+<hr>
+{% endfor %}
+
+<b>Aloita uusi keskustelu</b>
+
+<form action="/newtopic", method="POST">
+    <input type="text" name="topic">
+    <input type="submit" value="Tee uusi">
+</form>

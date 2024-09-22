@@ -1,0 +1,15 @@
+<h1>{{ topic[1] }}</h1>
+
+{% for i in messages %}
+<hr>
+    {{ i[1] }}
+<hr>
+{% endfor %}
+
+<form action="/send" method="POST">
+    Viesti: <br>
+    <textarea name="message" rows="3" cols="40"></textarea>
+    <input type="hidden" name="topic_id" value="{{ topic.id }}">
+    <br>
+    <input type="submit" value="Lähetä">
+</form>
