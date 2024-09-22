@@ -7,7 +7,7 @@ from werkzeug.security import check_password_hash, generate_password_hash
 
 
 app = Flask(__name__)
-app.config["SQLALCHEMY_DATABASE_URI"] = getenv("DATABASE_URL") 
+app.config["SQLALCHEMY_DATABASE_URI"] = "postgresql://postgres:a@localhost:5432" 
 app.secret_key = getenv("SECRET_KEY")
 db = SQLAlchemy(app)
 
@@ -17,7 +17,7 @@ def execute_schema(path):
     db.session.execute(text(sql))
     db.session.commit()
 
-##@app.before_request
+@app.before_request
 def base_for_db():
     execute_schema('schema.sql')
 

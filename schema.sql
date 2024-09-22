@@ -7,7 +7,7 @@ CREATE TABLE IF NOT EXISTS users (
 );
 CREATE TABLE IF NOT EXISTS topics (
     id SERIAL PRIMARY KEY,
-    name TEXT
+    name TEXT UNIQUE
 );
 
 CREATE TABLE IF NOT EXISTS discussion (
@@ -18,7 +18,15 @@ CREATE TABLE IF NOT EXISTS discussion (
     user_id INT REFERENCES users(id)
 );
 
-INSERT INTO topics (name) VALUES ('Koodaus');
-INSERT INTO topics (name) VALUES ('Urheilu');
-INSERT INTO topics (name) VALUES ('Politiikka');
-INSERT INTO topics (name) VALUES ('Opiskelu');
+INSERT INTO topics (name) VALUES ('Koodaus')
+ON CONFLICT (name) DO NOTHING;
+
+INSERT INTO topics (name) VALUES ('Urheilu')
+ON CONFLICT (name) DO NOTHING;
+
+INSERT INTO topics (name) VALUES ('Politiikka')
+ON CONFLICT (name) DO NOTHING;
+
+INSERT INTO topics (name) VALUES ('Opiskelu')
+ON CONFLICT (name) DO NOTHING;
+
