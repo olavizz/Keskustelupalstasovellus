@@ -22,5 +22,3 @@ INSERT INTO topics (name) VALUES ('Koodaus');
 INSERT INTO topics (name) VALUES ('Urheilu');
 INSERT INTO topics (name) VALUES ('Politiikka');
 INSERT INTO topics (name) VALUES ('Opiskelu');
-
-DROP TABLE IF EXISTS users, topics, discussion CASCADE;
