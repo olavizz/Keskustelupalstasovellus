@@ -51,7 +51,10 @@ def login():
         hash_value = user.password
         if check_password_hash(hash_value, password):
             session["username"] = username
-            return redirect("/")
+            subjects = db.session.execute(text("SELECT * FROM topics"))
+            subject_result = subjects.fetchall()
+            print(result)
+            return render_template("index.html", topics=subject_result)
         else:
             return redirect("/404")
 
@@ -79,7 +82,7 @@ def forum(topic_id):
     print(messages)
 
     topic = db.session.execute(text("SELECT * FROM topics WHERE id = :topic_id"), {"topic_id": topic_id}).fetchone()
-    return render_template("Forum.html", messages=messages, topic=topic)
+    return render_template("forum.html", messages=messages, topic=topic)
 
 
 @app.route("/new")

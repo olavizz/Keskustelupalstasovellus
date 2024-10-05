@@ -18,6 +18,13 @@ CREATE TABLE IF NOT EXISTS discussion (
     user_id INT REFERENCES users(id)
 );
 
+CREATE TABLE IF NOT EXISTS comments (
+    id SERIAL PRIMARY KEY,
+    comment TEXT,
+    message_id INT REFERENCES discussion(id),
+    user_id INT REFERENCES users(id)
+);
+
 INSERT INTO topics (name) VALUES ('Koodaus')
 ON CONFLICT (name) DO NOTHING;
 
