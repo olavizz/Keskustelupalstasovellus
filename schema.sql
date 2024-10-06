@@ -25,6 +25,12 @@ CREATE TABLE IF NOT EXISTS comments (
     user_id INT REFERENCES users(id)
 );
 
+CREATE TABLE IF NOT EXISTS likes (
+    id SERIAL PRIMARY KEY,
+    like_ INTEGER, 
+    message_id INT REFERENCES discussion(id)
+);
+
 INSERT INTO topics (name) VALUES ('Koodaus')
 ON CONFLICT (name) DO NOTHING;
 
@@ -36,4 +42,7 @@ ON CONFLICT (name) DO NOTHING;
 
 INSERT INTO topics (name) VALUES ('Opiskelu')
 ON CONFLICT (name) DO NOTHING;
+
+--DROP TABLE IF EXISTS users, comments, discussion, likes, topics CASCADE;
+
 

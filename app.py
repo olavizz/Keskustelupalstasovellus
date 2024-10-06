@@ -17,11 +17,12 @@ def execute_schema(path):
     db.session.execute(text(sql))
     db.session.commit()
 
-##execute_schema('schema.sql')
+
 
 @app.before_request
 def base_for_db():
-    if 'username' not in session and request.endpoint not in ['login', 'signup', 'index']:
+    execute_schema('schema.sql')
+    if 'username' not in session and request.endpoint not in ['login', 'signup', 'index', 'new']:
         flash("Kirjaudu sisään jatkaaksesi palvelua")
         return redirect("/")
 
@@ -83,7 +84,7 @@ def testi1():
 
 @app.route("/subjects/<int:topic_id>")
 def forum(topic_id):
-    result = db.session.execute(text("SELECT * FROM discussion where topic_id = :topic_id"), {"topic_id": topic_id})
+    result = db.session.execute(text("SELECT * FROM discussion JOIN users ON discussion.user_id = users.id where topic_id = :topic_id"), {"topic_id": topic_id})
     messages = result.fetchall()
     print(messages)
 
@@ -107,7 +108,12 @@ def newtopic():
 def send():
     topic_id = request.form["topic_id"]
     message = request.form["message"]
-    sql = text("INSERT INTO discussion (message, sent_at, topic_id) VALUES (:message, CURRENT_TIMESTAMP, :topic_id)")
-    db.session.execute(sql, {"message":message, "topic_id": topic_id})
+    username = session["username"]
+    sql = text("SELECT id FROM users WHERE username = :username")
+    result = db.session.execute(sql, {"username":username})
+    user = result.fetchone()
+    user_id = user.id
+    sql = text("INSERT INTO discussion (message, sent_at, topic_id, user_id) VALUES (:message, CURRENT_TIMESTAMP, :topic_id, :user_id)")
+    db.session.execute(sql, {"message":message, "topic_id":topic_id, "user_id":user_id})
     db.session.commit()
     return redirect(f"/subjects/{topic_id}")
