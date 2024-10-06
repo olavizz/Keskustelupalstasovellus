@@ -23,7 +23,7 @@ def execute_schema(path):
 def base_for_db():
     execute_schema('schema.sql')
     if 'username' not in session and request.endpoint not in ['login', 'signup', 'index', 'new']:
-        flash("Kirjaudu sisään jatkaaksesi palvelua")
+        flash("Kirjaudu sisään käyttääksesi palvelua")
         return redirect("/")
 
 

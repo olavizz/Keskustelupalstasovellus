@@ -1,17 +1,14 @@
-{% with messages = get_flashed_messages() %}
-        {% if messages %}
+{% with notifications = get_flashed_messages() %}
+        {% if notifications %}
             <ul>
-                {% for message in messages %}
-                    <li style="color: red;">{{ message }}</li>
+                {% for notification in notifications %}
+                    <li style="color: red;">{{ notification }}</li>
                 {% endfor %}
             </ul>
         {% endif %}
     {% endwith %}
 {% if session.username %}
 <p>Olet kirjautunut nimellä {{ session.username }}</p>
-<form action="/subjects">
-    <input type="submit" value="Keskusteluaiheet">
-</form>
 Tästä voit valita keskusteluaiheen
 
 <hr>
@@ -37,6 +34,6 @@ Tästä voit valita keskusteluaiheen
 <input type="password" name="password"></p>
 <input type="submit" value="Kirjaudu">
 </form>
-<a href="/new">Tee uusi käyttäjä </a>
+<a href="/new">Rekisteröidy </a>
 
 {% endif %}
