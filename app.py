@@ -17,9 +17,13 @@ def execute_schema(path):
     db.session.execute(text(sql))
     db.session.commit()
 
+##execute_schema('schema.sql')
+
 @app.before_request
 def base_for_db():
-    execute_schema('schema.sql')
+    if 'username' not in session and request.endpoint not in ['login', 'signup', 'index']:
+        flash("Kirjaudu sisään jatkaaksesi palvelua")
+        return redirect("/")
 
 
 @app.route("/")
