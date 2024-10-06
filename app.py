@@ -1,5 +1,5 @@
 from flask import Flask
-from flask import redirect, render_template, request, session
+from flask import flash, redirect, render_template, request, session
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.sql import text
 from os import getenv
@@ -46,7 +46,8 @@ def login():
     result = db.session.execute(sql, {"username":username})
     user = result.fetchone()
     if not user:
-        return redirect("/404")
+        flash("Väärä käyttäjätunnus tai salasana.")
+        return redirect("/")
     else:
         hash_value = user.password
         if check_password_hash(hash_value, password):
@@ -56,7 +57,8 @@ def login():
             print(result)
             return render_template("index.html", topics=subject_result)
         else:
-            return redirect("/404")
+            flash("Väärä käyttäjätunnus tai salasana.")
+            return redirect("/")
 
 
 @app.route("/logout")
