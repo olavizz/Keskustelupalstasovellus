@@ -1,0 +1,5 @@
+Flask
+flask-sqlalchemy
+werkzeug
+python-dotenv
+psycopg2
