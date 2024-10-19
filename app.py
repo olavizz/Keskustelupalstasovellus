@@ -31,6 +31,7 @@ def base_for_db():
 def index():
     if session.get("username"):
         subjects = db.session.execute(text("SELECT * FROM topics"))
+
         subject_result = subjects.fetchall()
         print(subject_result)
         return render_template("index.html", topics=subject_result)
@@ -63,6 +64,7 @@ def login():
         hash_value = user.password
         if check_password_hash(hash_value, password):
             session["username"] = username
+            session["user_id"] = user.id
             return redirect("/")
         else:
             flash("Väärä käyttäjätunnus tai salasana.")
@@ -87,12 +89,34 @@ def testi1():
 
 @app.route("/subjects/<int:topic_id>")
 def forum(topic_id):
-    result = db.session.execute(text("SELECT * FROM discussion JOIN users ON discussion.user_id = users.id where topic_id = :topic_id"), {"topic_id": topic_id})
+    result = db.session.execute(text("""
+        SELECT d.id as message_id, d.message, d.sent_at, u.username, COUNT(l.id) as like_count
+        FROM discussion d
+        JOIN users u ON d.user_id = u.id
+        LEFT JOIN likes l ON d.id = l.message_id AND l.like_ = 1
+        WHERE d.topic_id = :topic_id
+        GROUP BY d.id, u.username
+        ORDER BY d.sent_at DESC
+    """), {"topic_id": topic_id})
+
     messages = result.fetchall()
     print(messages)
 
     topic = db.session.execute(text("SELECT * FROM topics WHERE id = :topic_id"), {"topic_id": topic_id}).fetchone()
     return render_template("forum.html", messages=messages, topic=topic)
+
+@app.route("/like/<int:message_id>", methods=["POST"])
+def likes(message_id):
+    user_id = session.get("user_id")
+    print(user_id)
+    topic_id = request.form["topic_id"]
+    db.session.execute(text("""
+        INSERT INTO likes (user_id, message_id, like_)
+        VALUES (:user_id, :message_id, 1) 
+        ON CONFLICT (user_id, message_id) DO UPDATE SET like_ = 1;
+    """), {"user_id": user_id, "message_id": message_id})
+    db.session.commit()
+    return redirect(f"/subjects/{topic_id}")
 
 
 @app.route("/new")

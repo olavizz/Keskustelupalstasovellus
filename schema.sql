@@ -27,8 +27,11 @@ CREATE TABLE IF NOT EXISTS comments (
 
 CREATE TABLE IF NOT EXISTS likes (
     id SERIAL PRIMARY KEY,
-    like_ INTEGER, 
-    message_id INT REFERENCES discussion(id)
+    user_id INT REFERENCES users(id),
+    like_ INTEGER CHECK (like_ IN  (1, -1)), 
+    message_id INT REFERENCES discussion(id),
+    UNIQUE(user_id, message_id)
+
 );
 
 INSERT INTO topics (name) VALUES ('Koodaus')

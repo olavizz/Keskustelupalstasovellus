@@ -4,7 +4,12 @@
 
 {% for i in messages %}
 <hr>
-    <p>{{ i[1] }} - {{ i[6] }} - {{ i[2].strftime('%Y-%m-%d %H:%M:%S') }} </p>
+    <p><strong>{{ i.username }}</strong> - {{ i.message }} - {{ i.like_count }} - {{ i.sent_at }} 
+    <form action="/like/{{ i.message_id }}" method="POST">
+        <input type="hidden" name="topic_id" value="{{ topic.id }}">
+        <button type="submit">tykkää</button> 
+    </form>  
+</p>
 <hr>
 {% endfor %}
 
