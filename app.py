@@ -29,7 +29,13 @@ def base_for_db():
 
 @app.route("/")
 def index():
-    return render_template("index.html") 
+    if session.get("username"):
+        subjects = db.session.execute(text("SELECT * FROM topics"))
+        subject_result = subjects.fetchall()
+        print(subject_result)
+        return render_template("index.html", topics=subject_result)
+    else:
+        return render_template("index.html") 
 
 
 @app.route("/signup", methods=["POST"])
@@ -57,10 +63,7 @@ def login():
         hash_value = user.password
         if check_password_hash(hash_value, password):
             session["username"] = username
-            subjects = db.session.execute(text("SELECT * FROM topics"))
-            subject_result = subjects.fetchall()
-            print(result)
-            return render_template("index.html", topics=subject_result)
+            return redirect("/")
         else:
             flash("Väärä käyttäjätunnus tai salasana.")
             return redirect("/")
