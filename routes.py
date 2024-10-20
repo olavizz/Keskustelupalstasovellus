@@ -5,13 +5,14 @@ import discussion
 import profiles
 from werkzeug.security import check_password_hash
 import secrets
+from flask import send_from_directory
 
 
 
 @app.before_request
 def base_for_db():
     discussion.execute_schema('schema.sql')
-    if 'username' not in session and request.endpoint not in ['login', 'signup', 'index', 'new']:
+    if 'username' not in session and request.endpoint not in ['login', 'signup', 'index', 'new', 'assets']:
         flash("Kirjaudu sisään käyttääksesi palvelua")
         return redirect("/")
 
@@ -150,3 +151,8 @@ def edit_profile():
     user_id = session.get("user_id")
     profile = profiles.get_profile_id(user_id)
     return render_template("edit_profile.html", profile=profile)
+
+@app.route('/assets/<path:filename>')
+def assets(filename):
+    return send_from_directory('assets', filename)
+

@@ -1,0 +1,11 @@
+.header {
+    background-color: #e99362;
+    color: #333; 
+    font-family: Arial, sans-serif; 
+    margin: auto;
+}
+body {
+    margin: auto;
+    max-width: 45em;
+    font-family: 'Helvetica', 'Arial', sans-serif;
+}

@@ -1,3 +1,12 @@
+<!DOCTYPE html>
+<html lang="fi">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="{{ url_for('assets', filename='style.css') }}">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Keskustelupalsta</title>
+</head>
+<body>
 {% with notifications = get_flashed_messages() %}
         {% if notifications %}
             <ul>
@@ -29,7 +38,9 @@ Tästä voit valita keskusteluaiheen
 </form>
 <a href="/logout">Kirjaudu ulos</a>
 {% else %}
-<h1>Tervetuloa!</h1>
+<div class="header">
+    <h1>Tervetuloa!</h1>
+</div>
 <p>Kirjaudu sisään</p>
 <form action="/login" method="POST">
     <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
@@ -42,3 +53,5 @@ Tästä voit valita keskusteluaiheen
 <a href="/new">Rekisteröidy </a>
 
 {% endif %}
+</body>
+</html>
