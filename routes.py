@@ -1,11 +1,9 @@
 from app import app
 from flask import flash, redirect, render_template, request, session
-from flask_sqlalchemy import SQLAlchemy
-from os import getenv
 import users
 import discussion
 import profiles
-from werkzeug.security import check_password_hash, generate_password_hash
+from werkzeug.security import check_password_hash
 import secrets
 
 
@@ -21,7 +19,6 @@ def base_for_db():
 def index():
     if session.get("username"):
         subject_result = discussion.get_subjects()
-        print(subject_result)
         return render_template("index.html", topics=subject_result)
     else:
         return render_template("index.html") 
@@ -69,7 +66,6 @@ def likes(message_id):
     if session["csrf_token"] != request.form["csrf_token"]:
         return redirect(403)
     user_id = session.get("user_id")
-    print(user_id)
     discussion.like(message_id, user_id)
     topic_id = request.form["topic_id"]
     return redirect(f"/subjects/{topic_id}")
@@ -100,7 +96,6 @@ def send():
 def edit_message(message_id):
     message = discussion.get_message_id(message_id)
     if session.get("user_id") != message.user_id:
-        flash("Sinulla ei ole oikeutta muokata tätä viestiä.")
         return redirect("/")
     return render_template("edit_message.html", message=message)
 
@@ -110,7 +105,6 @@ def update_message(message_id):
         return redirect(403)
     
     message = discussion.get_message_id(message_id)
-    print(message)
 
     if session.get("user_id") != message.user_id:
         return redirect("/")
@@ -127,7 +121,6 @@ def delete(message_id):
     message = discussion.get_message_id(message_id)
 
     if not message:
-        flash("Viestiä ei löytynyt.")
         return redirect("/")
 
     if session.get("user_id") != message.user_id:
@@ -139,11 +132,9 @@ def delete(message_id):
 @app.route("/profile")
 def profile():
     if "user_id" not in session:
-        flash("Sinun täytyy olla kirjautuneena päästäksesi profiiliin.")
         return redirect("/")
 
     user_id = session["user_id"]
-    print(user_id)
     profile_data = profiles.get_profile_id(user_id)
     return render_template("profile.html", profile=profile_data)
 
