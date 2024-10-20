@@ -8,5 +8,12 @@ def get_profile_id(user_id):
     print(profile)
     return profile
 
-def update_profile(user_id):
-    pass
+def update_profile(user_id, bio, hometown):
+    sql = text("""
+        UPDATE profiles 
+        SET bio = :bio, hometown = :hometown
+        WHERE user_id = :user_id
+    """)
+    db.session.execute(sql, {"bio": bio, "hometown": hometown, "user_id": user_id})
+    db.session.commit()
+    return

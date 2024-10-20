@@ -59,12 +59,6 @@ def logout():
     del session["username"]
     return redirect("/")
 
-#@app.route("/subjects")
-#def subjects():
- #   subjects = db.session.execute(text("SELECT * FROM topics"))
-  ## print(result)
-    #return render_template("subjects.html", topics=result)
-
 @app.route("/subjects/<int:topic_id>")
 def forum(topic_id):
     messages, topic = discussion.get_discussion(topic_id)
@@ -79,18 +73,6 @@ def likes(message_id):
     discussion.like(message_id, user_id)
     topic_id = request.form["topic_id"]
     return redirect(f"/subjects/{topic_id}")
-
-##@app.route("/answer/<int:message_id>", methods=["POST"])
-#def answer(message_id):
- #   comment = request.form["answer"]
-  #  topic_id = request.form["topic_id"]
-  #  user_id = session.get("user_id")
-  #  sql = text("""INSERT INTO comments (comment, message_id, user_id) VALUES (:comment, :message_id, :user_id)""")
-  #  db.session.execute(sql, {"comment":comment, "message_id":message_id, "user_id":user_id})
-  #  db.session.commit()
-  #  return redirect(f"/subjects/{topic_id}")
-
-
 
 @app.route("/new")
 def new():
@@ -164,3 +146,16 @@ def profile():
     print(user_id)
     profile_data = profiles.get_profile_id(user_id)
     return render_template("profile.html", profile=profile_data)
+
+@app.route("/edit_profile", methods=["GET", "POST"])
+def edit_profile():
+    if request.method == "POST":
+        user_id = session.get("user_id")
+        bio = request.form["bio"]
+        hometown = request.form["hometown"]
+        profiles.update_profile(user_id, bio, hometown)
+        return redirect("/profile")
+    
+    user_id = session.get("user_id")
+    profile = profiles.get_profile_id(user_id)
+    return render_template("edit_profile.html", profile=profile)
