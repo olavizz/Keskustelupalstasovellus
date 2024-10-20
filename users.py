@@ -5,7 +5,7 @@ from sqlalchemy.sql import text
 def execute_signup(username, password):
     hash_value = generate_password_hash(password)
     print(hash_value)
-    sql = text("INSERT INTO users (username, password) VALUES (:username, :password)")
+    sql = text("INSERT INTO users (username, password) VALUES (:username, :password) RETURNING id")
     result = db.session.execute(sql, {"username":username, "password":hash_value})
     user_id = result.fetchone()[0]
 

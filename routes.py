@@ -161,5 +161,6 @@ def profile():
         return redirect("/")
 
     user_id = session["user_id"]
+    print(user_id)
     profile_data = profiles.get_profile_id(user_id)
     return render_template("profile.html", profile=profile_data)
