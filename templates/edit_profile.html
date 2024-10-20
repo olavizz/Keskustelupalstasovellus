@@ -1,11 +1,26 @@
+<!DOCTYPE html>
+<html lang="fi">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="{{ url_for('assets', filename='style.css') }}">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Keskustelupalsta</title>
+</head>
+<body>
+
 <h1>Muokkaa profiiliasi</h1>
 <form action="/edit_profile" method="POST">
-    <label for="bio">Bio:</label>
+<div>
+    <label for="bio">Kuvaus:</label>
     <textarea name="bio">{{ profile.bio }}</textarea><br>
-
+</div>
+<div>
     <label for="hometown">Kotikaupunki:</label>
     <input type="text" name="hometown" value="{{ profile.hometown }}"><br>
+</div>
 
     <input type="submit" value="Päivitä profiili">
 </form>
 <a href="/profile">Peruuta</a>
+
+</body>
