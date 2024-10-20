@@ -1,7 +1,28 @@
+<!DOCTYPE html>
+<html lang="fi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="{{ url_for('assets', filename='style.css') }}">
+    <title>Keskustelupalsta</title>
+</head>
+<body>
 <h1>{{ topic[1] }}</h1>
 
 <a href="/">takaisin</a>
 
+<div class="send-form">
+    <form action="/send" method="POST">
+        <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
+        Viesti: <br>
+        <textarea name="message" rows="3" cols="40"></textarea>
+        <input type="hidden" name="topic_id" value="{{ topic.id }}">
+        <br>
+        <input type="submit" value="Lähetä">
+    </form>
+</div>
+
+<div class="messages">
 {% for i in messages %}
 <hr>
     <p>
@@ -24,15 +45,8 @@
         {% endif %}
     </p>
 <hr>
+</div>
 {% endfor %}
-
-<form action="/send" method="POST">
-    <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
-    Viesti: <br>
-    <textarea name="message" rows="3" cols="40"></textarea>
-    <input type="hidden" name="topic_id" value="{{ topic.id }}">
-    <br>
-    <input type="submit" value="Lähetä">
-</form>
+</body>
 
 

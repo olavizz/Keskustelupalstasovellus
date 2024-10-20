@@ -81,7 +81,7 @@ def newtopic():
         return redirect(403)
     topic = request.form["topic"]
     discussion.add_topic(topic)
-    return redirect("/subjects")
+    return redirect("/")
 
 @app.route("/send", methods=["POST"])
 def send():
