@@ -11,18 +11,12 @@
             <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
             <button type="submit">tykkää</button>
         </form>
-
-
-        <button onclick="toggleAnswerArea('{{ i.message_id }}')">vastaa</button>
-        
-        <div id="answer-area-{{ i.message_id }}" style="display: none;">
-            <form action="/answer/{{ i.message_id }}" method="POST">
-                <textarea name="answer" rows="3" cols="40"></textarea>
-                <input type="hidden" name="topic_id" value="{{ topic.id }}">
-                <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
-                <input type="submit" value="Lähetä">
-            </form>
-        </div>
+        {% if session.username == i.username %}
+        <form action="/edit/{{ i.message_id }}" method="POST" style="display:inline;">
+            <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
+            <button type="submit">Muokkaa</button>
+        </form>
+        {% endif %}
     </p>
 <hr>
 {% endfor %}
@@ -36,13 +30,4 @@
     <input type="submit" value="Lähetä">
 </form>
 
-<script>
-function toggleAnswerArea(messageId) {
-    var answerArea = document.getElementById("answer-area-" + messageId);
-    if (answerArea.style.display === "none") {
-        answerArea.style.display = "block";
-    } else {
-        answerArea.style.display = "none";
-    }
-}
-</script>
+

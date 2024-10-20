@@ -53,3 +53,17 @@ def send_message(topic_id, message, username):
     db.session.execute(sql, {"message":message, "topic_id":topic_id, "user_id":user_id})
     db.session.commit()
     return
+
+def get_message_id(message_id):
+    sql = text("SELECT * FROM discussion WHERE id = :message_id")
+    result = db.session.execute(sql, {"message_id": message_id}).fetchone()
+    
+    if result:
+        return result
+    return None
+
+def update_message(message_id, new_content):
+    sql = text("UPDATE discussion SET message = :new_content WHERE id = :message_id")
+    db.session.execute(sql, {"new_content": new_content, "message_id": message_id})
+    db.session.commit()
+    return

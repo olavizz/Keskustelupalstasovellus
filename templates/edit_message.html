@@ -1,0 +1,8 @@
+<h1>Muokkaa viestiäsi</h1>
+
+<form action="/update/{{ message.id }}" method="POST">
+    <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
+    <textarea name="message" rows="3" cols="40">{{ message.message }}</textarea>
+    <br>
+    <input type="submit" value="Päivitä">
+</form>

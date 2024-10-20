@@ -112,3 +112,27 @@ def send():
     username = session["username"]
     discussion.send_message(topic_id, message, username)
     return redirect(f"/subjects/{topic_id}")
+
+@app.route("/edit/<int:message_id>", methods=["POST"])
+def edit_message(message_id):
+    message = discussion.get_message_id(message_id)
+    if session.get("user_id") != message.user_id:
+        flash("Sinulla ei ole oikeutta muokata tätä viestiä.")
+        return redirect("/")
+    return render_template("edit_message.html", message=message)
+
+@app.route("/update/<int:message_id>", methods=["POST"])
+def update_message(message_id):
+    if session.get("csrf_token") != request.form.get("csrf_token"):
+        return redirect(403)
+    
+    message = discussion.get_message_id(message_id)
+    print(message)
+
+    if session.get("user_id") != message.user_id:
+        return redirect("/")
+
+    new_content = request.form["message"]
+    discussion.update_message(message_id, new_content)    
+    return redirect(f"/subjects/{message.topic_id}")
+
