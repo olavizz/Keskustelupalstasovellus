@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 
 <form action="/signup" method="POST">
+    {{ csrf_token() }}
     <p>Anna käyttäjänimi
         <input type="text" name="username"></p>
         <p>Anna salasana

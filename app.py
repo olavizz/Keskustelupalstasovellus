@@ -4,12 +4,14 @@ from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.sql import text
 from os import getenv
 from werkzeug.security import check_password_hash, generate_password_hash
+from flask_wtf.csrf import CSRFProtect
 
 
 app = Flask(__name__)
 app.config["SQLALCHEMY_DATABASE_URI"] = getenv("DATABASE_URL") 
 app.secret_key = getenv("SECRET_KEY")
 db = SQLAlchemy(app)
+csrf = CSRFProtect(app)
 
 def execute_schema(path):
     with open(path, 'r') as schema:
@@ -117,6 +119,17 @@ def likes(message_id):
     """), {"user_id": user_id, "message_id": message_id})
     db.session.commit()
     return redirect(f"/subjects/{topic_id}")
+
+@app.route("/answer/<int:message_id>", methods=["POST"])
+def answer(message_id):
+    comment = request.form["answer"]
+    topic_id = request.form["topic_id"]
+    user_id = session.get("user_id")
+    sql = text("""INSERT INTO comments (comment, message_id, user_id) VALUES (:comment, :message_id, :user_id)""")
+    db.session.execute(sql, {"comment":comment, "message_id":message_id, "user_id":user_id})
+    db.session.commit()
+    return redirect(f"/subjects/{topic_id}")
+
 
 
 @app.route("/new")

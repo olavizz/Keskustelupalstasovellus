@@ -4,19 +4,46 @@
 
 {% for i in messages %}
 <hr>
-    <p><strong>{{ i.username }}</strong> - {{ i.message }} - {{ i.like_count }} - {{ i.sent_at }} 
-    <form action="/like/{{ i.message_id }}" method="POST">
-        <input type="hidden" name="topic_id" value="{{ topic.id }}">
-        <button type="submit">tykkää</button> 
-    </form>  
-</p>
+    <p>
+        <strong>{{ i.username }}</strong> - {{ i.message }} - {{ i.like_count }} - {{ i.sent_at }} 
+        <form action="/like/{{ i.message_id }}" method="POST">
+            {{ csrf_token() }}
+            <input type="hidden" name="topic_id" value="{{ topic.id }}">
+            <button type="submit">tykkää</button>
+        </form>
+        {% for comments in i}
+
+
+        <button onclick="toggleAnswerArea('{{ i.message_id }}')">vastaa</button>
+        
+        <div id="answer-area-{{ i.message_id }}" style="display: none;">
+            <form action="/answer/{{ i.message_id }}" method="POST">
+                {{ csrf_token() }}
+                <textarea name="answer" rows="3" cols="40"></textarea>
+                <input type="hidden" name="topic_id" value="{{ topic.id }}">
+                <input type="submit" value="Lähetä">
+            </form>
+        </div>
+    </p>
 <hr>
 {% endfor %}
 
 <form action="/send" method="POST">
+    {{ csrf_token() }}
     Viesti: <br>
     <textarea name="message" rows="3" cols="40"></textarea>
     <input type="hidden" name="topic_id" value="{{ topic.id }}">
     <br>
     <input type="submit" value="Lähetä">
 </form>
+
+<script>
+function toggleAnswerArea(messageId) {
+    var answerArea = document.getElementById("answer-area-" + messageId);
+    if (answerArea.style.display === "none") {
+        answerArea.style.display = "block";
+    } else {
+        answerArea.style.display = "none";
+    }
+}
+</script>

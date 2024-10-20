@@ -20,6 +20,7 @@ Tästä voit valita keskusteluaiheen
 <b>Aloita uusi keskustelu</b>
 
 <form action="/newtopic", method="POST">
+    {{ csrf_token() }}
     <input type="text" name="topic">
     <input type="submit" value="Tee uusi">
 </form>
@@ -28,6 +29,7 @@ Tästä voit valita keskusteluaiheen
 <h1>Tervetuloa!</h1>
 <p>Kirjaudu sisään</p>
 <form action="/login" method="POST">
+    {{ csrf_token() }}
 <p>Tunnus:<br>
 <input type="text" name="username"></p>
 <p>Salasana:<br>

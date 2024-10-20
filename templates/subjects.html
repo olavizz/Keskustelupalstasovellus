@@ -9,6 +9,7 @@ Tästä voit valita keskusteluaiheen
 <b>Aloita uusi keskustelu</b>
 
 <form action="/newtopic", method="POST">
+    {{ csrf_token() }}
     <input type="text" name="topic">
     <input type="submit" value="Tee uusi">
 </form>
