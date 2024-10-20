@@ -2,9 +2,11 @@ Sovelluksen tila:
 
 - Sovellukseen pystyy kirjautumaan ja tekemään käyttäjän.
 - Sovellukseen pystyy lisäämään keskusteluaiheen ja liittymään keskusteluun ja myös lähettää viestejä.
+- Sovelluksessa käyttäjä pystyy poistaman sekä myös muokkaamaan lähettämiään viestejä
 - Viesteissä näkyvät lähettäjän nimi sekä kellonaika
 - Sovelluksessa on evästeet käytössä, jolloin keskustelupalstalle ei pääse ilman kirjautumista.
 - Sovelluksesta pystyy kirjautumaan ulos.
+- Sovelluksessa käyttäjälle löytyy oma profiili ja sitä pystyy muokkaamaan halutessaan
 
 - Sovelluksesta uupuu vielä toimintoja.
 
@@ -28,6 +30,6 @@ Kuinka käyttää sovellusta:
 - Käyttäjä voi nähdä muiden käyttäjien käyttäjänimet sekä lähetettyjen julkaisujen kellonajat
 - Käyttäjä voi muokata sekä poistaa omia julkaisujaan
 - Käyttäjä voi myös vastailla muille, jolloin syntyy keskusteluketju
-- Ylläpitäjä voi poistaa sekä lisätä aiheita
-- Ylläpitäjä voi myös poistaa muiden käyttäjien julkaisuja
+- Käyttäjä voi lisätä keskusteluaiheita
+- Käyttäjä voi nähdä sekä muokata omaa profiiliaan
   
