@@ -67,3 +67,12 @@ def update_message(message_id, new_content):
     db.session.execute(sql, {"new_content": new_content, "message_id": message_id})
     db.session.commit()
     return
+
+def delete_message(message_id):
+    delete_likes_sql = text("DELETE FROM likes WHERE message_id = :message_id")
+    db.session.execute(delete_likes_sql, {"message_id": message_id})
+    sql = text("DELETE FROM discussion WHERE id = :message_id")
+    db.session.execute(sql, {"message_id": message_id})
+    db.session.commit()
+    return
+

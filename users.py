@@ -6,7 +6,11 @@ def execute_signup(username, password):
     hash_value = generate_password_hash(password)
     print(hash_value)
     sql = text("INSERT INTO users (username, password) VALUES (:username, :password)")
-    db.session.execute(sql, {"username":username, "password":hash_value})
+    result = db.session.execute(sql, {"username":username, "password":hash_value})
+    user_id = result.fetchone()[0]
+
+    user_sql = text("INSERT INTO profiles (user_id, username) VALUES (:user_id, :username)")
+    db.session.execute(user_sql, {"user_id": user_id, "username": username})
     db.session.commit()
     return
 

@@ -3,7 +3,8 @@ CREATE TABLE IF NOT EXISTS users (
     id SERIAL PRIMARY KEY,
     username TEXT,
     password TEXT,
-    created_at TIMESTAMP
+    created_at TIMESTAMP,
+    UNIQUE(username)
 );
 CREATE TABLE IF NOT EXISTS topics (
     id SERIAL PRIMARY KEY,
@@ -18,13 +19,6 @@ CREATE TABLE IF NOT EXISTS discussion (
     user_id INT REFERENCES users(id)
 );
 
-CREATE TABLE IF NOT EXISTS comments (
-    id SERIAL PRIMARY KEY,
-    comment TEXT,
-    message_id INT REFERENCES discussion(id),
-    user_id INT REFERENCES users(id)
-);
-
 CREATE TABLE IF NOT EXISTS likes (
     id SERIAL PRIMARY KEY,
     user_id INT REFERENCES users(id),
@@ -33,6 +27,16 @@ CREATE TABLE IF NOT EXISTS likes (
     UNIQUE(user_id, message_id)
 
 );
+
+CREATE TABLE IF NOT EXISTS profiles (
+    id SERIAL PRIMARY KEY,
+    user_id INT REFERENCES users(id) ON DELETE CASCADE,
+    username TEXT,
+    bio TEXT,
+    signup_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    hometown TEXT
+);
+
 
 INSERT INTO topics (name) VALUES ('Koodaus')
 ON CONFLICT (name) DO NOTHING;

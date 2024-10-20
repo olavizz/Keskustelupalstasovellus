@@ -4,6 +4,7 @@ from flask_sqlalchemy import SQLAlchemy
 from os import getenv
 import users
 import discussion
+import profiles
 from werkzeug.security import check_password_hash, generate_password_hash
 import secrets
 
@@ -136,3 +137,29 @@ def update_message(message_id):
     discussion.update_message(message_id, new_content)    
     return redirect(f"/subjects/{message.topic_id}")
 
+@app.route("/delete/<int:message_id>", methods=["POST"])
+def delete(message_id):
+    if session.get("csrf_token") != request.form.get("csrf_token"):
+        return redirect(403)
+    topic_id = request.form["topic_id"]
+    message = discussion.get_message_id(message_id)
+
+    if not message:
+        flash("Viestiä ei löytynyt.")
+        return redirect("/")
+
+    if session.get("user_id") != message.user_id:
+        return redirect("/")
+    
+    discussion.delete_message(message_id)
+    return redirect(f"/subjects/{topic_id}")
+
+@app.route("/profile")
+def profile():
+    if "user_id" not in session:
+        flash("Sinun täytyy olla kirjautuneena päästäksesi profiiliin.")
+        return redirect("/")
+
+    user_id = session["user_id"]
+    profile_data = profiles.get_profile_id(user_id)
+    return render_template("profile.html", profile=profile_data)
